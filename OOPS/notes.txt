@@ -1,0 +1,8 @@
+CONSTRUCTOR - To create something (overloaded with arguments)
+
+1. Default constructor : has no arguments, also cslled as non-argument constructor
+2. Parametarised constructor
+3. Default-Parametarised constructor
+4. Copy constructor
+
+DESTRUCTOR - To destroy the used objects. cant be overloaded
