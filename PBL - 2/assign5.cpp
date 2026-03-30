@@ -96,13 +96,10 @@ public:
 
         if (key < node->key)
             node->left = insert(node->left, key, meaning);
-
         else if (key > node->key)
             node->right = insert(node->right, key, meaning);
-
         else
         {
-            // Update meaning
             node->meaning = meaning;
             return node;
         }
@@ -120,22 +117,26 @@ public:
         inorder(node->right);
     }
 
-    avl_node *search(avl_node *node, string key, int &comp)
+    void preorder(avl_node *node)
     {
         if (node == NULL)
-            return NULL;
+            return;
 
-        comp++;
-
-        if (key == node->key)
-            return node;
-
-        else if (key < node->key)
-            return search(node->left, key, comp);
-
-        else
-            return search(node->right, key, comp);
+        cout << node->key << " : " << node->meaning << endl;
+        preorder(node->left);
+        preorder(node->right);
     }
+
+    void postorder(avl_node *node)
+    {
+        if (node == NULL)
+            return;
+
+        postorder(node->left);
+        postorder(node->right);
+        cout << node->key << " : " << node->meaning << endl;
+    }
+
 };
 
 int main()
@@ -149,7 +150,7 @@ int main()
         cout << "\n--- AVL Dictionary Menu ---\n";
         cout << "1. Insert Keyword\n";
         cout << "2. Update Meaning\n";
-        cout << "3. Display (Sorted)\n";
+        cout << "3. Display (All Traversals)\n";
         cout << "4. Search Keyword\n";
         cout << "5. Exit\n";
 
@@ -162,7 +163,7 @@ int main()
             cout << "Enter keyword: ";
             cin >> key;
             cout << "Enter meaning: ";
-            cin.ignore(); // Clear newline left in buffer
+            cin.ignore();
             getline(cin, meaning);
             tree.root = tree.insert(tree.root, key, meaning);
             break;
@@ -171,34 +172,23 @@ int main()
             cout << "Enter keyword to update: ";
             cin >> key;
             cout << "Enter new meaning: ";
-            cin.ignore(); // Clear newline left in buffer
+            cin.ignore();
             getline(cin, meaning);
             tree.root = tree.insert(tree.root, key, meaning);
             break;
 
         case 3:
-            cout << "\nDictionary (Sorted Order):\n";
+            cout << "\nInorder Traversal:\n";
             tree.inorder(tree.root);
+
+            cout << "\nPreorder Traversal:\n";
+            tree.preorder(tree.root);
+
+            cout << "\nPostorder Traversal:\n";
+            tree.postorder(tree.root);
             break;
 
         case 4:
-        {
-            int comp = 0;
-            cout << "Enter keyword to search: ";
-            cin >> key;
-
-            avl_node *res = tree.search(tree.root, key, comp);
-
-            if (res != NULL)
-                cout << "Found: " << res->key << " -> " << res->meaning << endl;
-            else
-                cout << "Keyword not found\n";
-
-            cout << "Comparisons: " << comp << endl;
-            break;
-        }
-
-        case 5:
             cout << "Exiting...\n";
             break;
 
