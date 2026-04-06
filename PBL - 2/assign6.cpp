@@ -1,61 +1,70 @@
 #include <iostream>
 using namespace std;
 
-int main() {
+int main()
+{
     int n, W;
 
     cout << "Enter number of items: ";
     cin >> n;
 
-    int wt[50], val[50];
+    int w[n+1], v[n+1];
 
     cout << "Enter weights:\n";
-    for (int i = 0; i < n; i++) {
-        cin >> wt[i];
-    }
+    for(int i = 1; i <= n; i++)
+        cin >> w[i];
 
     cout << "Enter values (profits):\n";
-    for (int i = 0; i < n; i++) {
-        cin >> val[i];
-    }
+    for(int i = 1; i <= n; i++)
+        cin >> v[i];
 
-    cout << "Enter capacity of knapsack: ";
+    cout << "Enter capacity W: ";
     cin >> W;
 
-    int dp[51][101];
+    int B[n+1][W+1];
 
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (i == 0 || w == 0)
-                dp[i][w] = 0;
-        }
+    //first row
+    for(int j = 0; j <= W; j++)
+    {
+        B[0][j] = 0;
     }
 
-    for (int i = 1; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (wt[i - 1] <= w) {
-                int include = val[i - 1] + dp[i - 1][w - wt[i - 1]];
-                int exclude = dp[i - 1][w];
+    //first column
+    for(int i = 1; i <= n; i++)
+    {
+        B[i][0] = 0;
+    }
 
-                if (include > exclude)
-                    dp[i][w] = include;
+    //table
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = 0; j <= W; j++)
+        {
+            if(w[i] <= j)
+            {
+                if(v[i] + B[i-1][j - w[i]] > B[i-1][j])
+                    B[i][j] = v[i] + B[i-1][j - w[i]];
                 else
-                    dp[i][w] = exclude;
-            } else {
-                dp[i][w] = dp[i - 1][w];
+                    B[i][j] = B[i-1][j];
+            }
+            else
+            {
+                B[i][j] = B[i-1][j];
             }
         }
     }
 
-    cout << "\nProfit Table:\n";
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            cout << dp[i][w] << "\t";
+    cout << "\nMaximum Profit : " << B[n][W] << endl;
+
+    cout << "\nDP Table :\n";
+    for(int i = 0; i <= n; i++)
+    {
+        for(int j = 0; j <= W; j++)
+        {
+            cout << B[i][j] << "\t";
         }
         cout << endl;
     }
-
-    cout << "\nTotal Maximum Profit = " << dp[n][W];
 
     return 0;
 }
