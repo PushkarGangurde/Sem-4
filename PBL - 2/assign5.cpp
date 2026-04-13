@@ -135,7 +135,7 @@ int main()
 
     do
     {
-        cout << "\n--- AVL Dictionary Menu ---\n";
+        cout << "\nAVL Dictionary Menu\n";
         cout << "1. Insert Keyword\n";
         cout << "2. Update Meaning\n";
         cout << "3. Display (All Traversals)\n";
@@ -183,7 +183,7 @@ int main()
             cout << "Invalid choice\n";
         }
 
-    } while (choice != 5);
+    } while (choice != 4);
 
     return 0;
 }

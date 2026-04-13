@@ -23,19 +23,15 @@ int main()
 
     int B[n+1][W+1];
 
-    //first row
+    // first row
     for(int j = 0; j <= W; j++)
-    {
         B[0][j] = 0;
-    }
 
-    //first column
+    // first column
     for(int i = 1; i <= n; i++)
-    {
         B[i][0] = 0;
-    }
 
-    //table
+    // fill table
     for(int i = 1; i <= n; i++)
     {
         for(int j = 0; j <= W; j++)
@@ -56,7 +52,24 @@ int main()
 
     cout << "\nMaximum Profit : " << B[n][W] << endl;
 
-    cout << "\nDP Table :\n";
+    //selected items
+    cout << "\nSelected items:\n";
+
+    int i = n, j = W;
+
+    while(i > 0 && j > 0){
+        if(B[i][j] != B[i-1][j]){
+            cout << "Item " << i 
+                 << " (Weight=" << w[i] 
+                 << ", Profit=" << v[i] << ")\n";
+
+            j = j - w[i];  
+        }
+        i--; 
+    }
+
+    // print table
+    cout << "\nTable:\n";
     for(int i = 0; i <= n; i++)
     {
         for(int j = 0; j <= W; j++)
