@@ -5,128 +5,73 @@ using namespace std;
 
 class Student {
 private:
-    int roll;        
-    string name;     
-    float marks;     
+    int roll;
+    string name;
+    float marks;
 
 public:
+    // Take input from user
     void setData() {
-        cout << "Enter Student ID: ";
+        cout << "Enter Roll: ";
         cin >> roll;
 
         cout << "Enter Name: ";
-        cin.ignore();              
-        getline(cin, name); 
+        cin.ignore();
+        getline(cin, name);
 
         cout << "Enter Marks: ";
         cin >> marks;
     }
 
+    // Write to file
+    void writeData(fstream &file) {
+        file << roll << " " << name << " " << marks << endl;
+    }
+
+    // Read from file
+    void readData(fstream &file) {
+        file >> roll >> name >> marks;
+    }
+
+    // Display
     void display() {
-        cout << "ID: " << roll
+        cout << "Roll: " << roll
              << "\tName: " << name
              << "\tMarks: " << marks << endl;
-    }
-
-    void writeData(ofstream &outfile) {
-        outfile << roll << " " << name << " " << marks << endl;
-    }
-
-    void readData(ifstream &infile) {
-        infile >> roll >> name >> marks;
     }
 };
 
 int main() {
+    Student s[10];
+    int n;
 
-    Student s[50]; 
-    int count = 0;
-    int choice;
+    cout << "Enter number of students: ";
+    cin >> n;
 
-    do {
-        cout << "\nMenu\n";
-        cout << "1. Add Student\n";
-        cout << "2. Display Students\n";
-        cout << "3. Save Students to File\n";
-        cout << "4. Load Students from File\n";
-        cout << "5. Exit\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+    // Open file for writing
+    fstream file("student.txt", ios::out);
 
-        switch(choice) {
+    // Take input and write to file
+    for(int i = 0; i < n; i++) {
+        cout << "\nEnter details for student " << i+1 << endl;
+        s[i].setData();
+        s[i].writeData(file);
+    }
 
-        case 1:
-            if(count < 50) {
-                s[count].setData();
-                count++;
-            }
-            else {
-                cout << "Student list full\n";
-            }
-            break;
+    file.close();
 
-        case 2:
-            if(count == 0) {
-                cout << "No records found\n";
-            }
-            else {
-                cout << "\nStudent Records\n";
-                for(int i = 0; i < count; i++) {
-                    s[i].display();
-                }
-            }
-            break;
+    // Open same file for reading
+    file.open("student.txt", ios::in);
 
-        case 3:
-        {
-            ofstream outfile("student.txt");
+    cout << "\nData read from file:\n";
 
-            if(!outfile) {
-                cout << "File error\n";
-                break;
-            }
+    // Read and display data
+    for(int i = 0; i < n; i++) {
+        s[i].readData(file);
+        s[i].display();
+    }
 
-            for(int i = 0; i < count; i++) {
-                s[i].writeData(outfile);
-            }
-
-            outfile.close();
-            cout << "Data saved to file\n";
-            break;
-        }
-
-        case 4:
-        {
-            ifstream infile("student.txt");
-
-            if(!infile) {
-                cout << "File not found\n";
-                break;
-            }
-
-            count = 0;
-
-            // Read until file ends
-            while(infile && count < 50) {
-                s[count].readData(infile);
-                if(infile)
-                    count++;
-            }
-
-            infile.close();
-            cout << "Data loaded from file\n";
-            break;
-        }
-
-        case 5:
-            cout << "Exiting program\n";
-            break;
-
-        default:
-            cout << "Invalid choice\n";
-        }
-
-    } while(choice != 5);
+    file.close();
 
     return 0;
 }
