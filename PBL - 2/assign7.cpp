@@ -11,6 +11,7 @@ bool place(int k, int i) {
     }
     return true;
 }
+
 void printSolution(int n) {
     cout << "\nSolution (Array form): ";
     for (int i = 1; i <= n; i++) {
@@ -27,6 +28,7 @@ void printSolution(int n) {
         cout << endl;
     }
 }
+
 void NQueen(int k, int n) {
     for (int i = 1; i <= n; i++) {
         if (place(k, i)) {
